@@ -4,9 +4,10 @@ import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
 } from "../../utils/localStorage";
+import { useUserContext } from "../../context";
 
 const MySidebar = () => {
-  const { user } = getUserFromLocalStorage();
+  const { user } = useUserContext();
   return (
     <div>
       <Sidebar

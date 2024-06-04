@@ -12,7 +12,7 @@ const customFetch = axios.create({baseURL : 'http://localhost:8080'})
 customFetch.interceptors.request.use((config) => {
   const user = getUserFromLocalStorage();
   if (user) {
-    config.headers['Authorization'] = `Bearer ${user.token}`;
+    config.headers['Authorization'] = `Bearer ${user.accessToken}`;
   }
   return config;
 });

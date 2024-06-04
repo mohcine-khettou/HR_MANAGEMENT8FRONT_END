@@ -6,7 +6,7 @@ export const getUserByEmail = async(email)=>{
         console.log('====================================');
         console.log(data);
         console.log('====================================');
-        return {user : data}
+        return {data}
     } catch (error) {
         return {error}
     }

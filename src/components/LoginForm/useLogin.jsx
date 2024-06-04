@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { login } from "../../api/auth.js";
 import { useNavigate } from "react-router-dom";
-import { getUserFromLocalStorage } from "../../utils/localStorage.js";
+import { useUserContext } from "../../context";
 
 const credentials = {
   email: "",
@@ -12,10 +11,10 @@ const useLogin = () => {
   const [userCredentials, setUserCredentials] = useState(credentials);
   const [error, setError] = useState({ field: "", msg: "", isError: false });
   const navigate = useNavigate();
-  const user = getUserFromLocalStorage();
+  const { user, login } = useUserContext();
   useEffect(() => {
     if (user) navigate("/");
-  }, []);
+  }, [user]);
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -27,13 +26,7 @@ const useLogin = () => {
       setError({ ...error, isError: true });
       return;
     }
-    const data = await login(userCredentials.email, userCredentials.password);
-    if (data.error) {
-      console.log("====================================");
-      console.log(data.error);
-      console.log("====================================");
-    }
-    if (data.user) navigate("/");
+    await login(userCredentials.email, userCredentials.password);
   };
 
   return { handleChange, handleSubmit, userCredentials };

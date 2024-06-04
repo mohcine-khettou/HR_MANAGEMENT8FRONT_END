@@ -1,27 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import listItems from "./listItems";
 import { Card } from "primereact/card";
 import Profile from "../../assets/images/profile.jpg";
-import { getUserFromLocalStorage } from "../../utils/localStorage";
-import { getUserByEmail } from "../../api/users";
+import { useUserContext } from "../../context";
 const UserInfo = () => {
   const [selectedItem, setSelectedItem] = useState(
     listItems.find((item) => item.id === 1)
   );
-  const [user, setUser] = useState({});
-  const getUser = async () => {
-    const {
-      user: { email },
-    } = getUserFromLocalStorage();
-    const data = await getUserByEmail(email);
-    if (data.user) setUser(data.user);
-    else {
-      // handle the error
-    }
-  };
-  useEffect(() => {
-    getUser();
-  }, []);
+  const { user } = useUserContext();
   const getListItemStyle = (id) => {
     let className =
       "py-3 px-5 hover:bg-[#04a9f51a] hover:text-[#04a9f5] cursor-pointer rounded-md mb-1";

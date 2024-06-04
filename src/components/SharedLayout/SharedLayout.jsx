@@ -1,9 +1,9 @@
-import { getUserFromLocalStorage } from "../../utils/localStorage";
+import { useUserContext } from "../../context";
 import Sidebar from "./Sidebar";
 import { Navigate, Outlet } from "react-router-dom";
 
 const SharedLayout = () => {
-  const user = getUserFromLocalStorage();
+  const { user } = useUserContext();
   if (!user) return <Navigate to={"/login"} />;
   return (
     <>
