@@ -9,6 +9,8 @@ import axios from 'axios';
 export const Demande = () => {
     const [visible, setVisible] = useState(false);
     const [demandes, setDemandes] = useState([]);
+    const [typeDemmande, setTypeDemmande] = useState('');
+    const [justification, setJustification] = useState('');
     const id = 1; 
     const headerElement = (
         <div className="inline-flex align-items-center justify-content-center gap-2">
@@ -18,13 +20,35 @@ export const Demande = () => {
 
     const footerContent = (
         <div>
-            <Button label="Envoyer" icon="pi pi-check" onClick={() => setVisible(false)} autoFocus />
+            <Button label="Envoyer" icon="pi pi-check" onClick={handleAddDemmande} autoFocus />
         </div>
     );
+    const handleAddDemmande = async () => {
+        const newDemmande = {
+            typeDemmande,
+            justification,
+            dateDemmande: new Date().toISOString(),
+            status: 'EN_ATTENTE',
+            employe: { doti: id }
+        };
+
+        try {
+            const response = await axios.post('http://localhost:8080/api/v1/demmandes/add', newDemmande);
+            if (response.status === 201) {
+                setDemandes([...demandes, response.data]);
+                setVisible(false);
+            } else {
+                console.error('Failed to add demande');
+            }
+        } catch (error) {
+            console.error('Error adding demande:', error);
+        }
+    };
+
 
     const fetchDemandes = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/employes/${id}`);
+            const response = await axios.get(`http://localhost:8080/api/v1/employes${id}`);
             if (response.status === 200) {
                 const employe = response.data;
                 const formattedDemandes = employe.demmandeCollection.map(demande => ({
@@ -46,7 +70,7 @@ export const Demande = () => {
 
     const deleteDemmande = async (idDemmande) => {
         try {
-            const response = await axios.delete(`http://localhost:8080/api/demmandes/delete/${idDemmande}`);
+            const response = await axios.delete(`http://localhost:8080/api/v1/demmandes/delete/${idDemmande}`);
             if (response.status === 204) {
                 const updatedDemandes = demandes.filter(demande => demande.id !== idDemmande);
                 setDemandes(updatedDemandes);
@@ -74,25 +98,35 @@ export const Demande = () => {
                     Ajouter un Demande
                 </Button>
                 <Dialog visible={visible} modal header={headerElement} footer={footerContent} style={{ width: '30rem' }} onHide={() => setVisible(false)}>
-                    <div class="mb-4 mt-2">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="type">
-                        Type de la demande :
+                    <div className="mb-4 mt-2">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="typeDemmande">
+                            Type de la demande :
                         </label>
                         <select
-                        className="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                        id="childrenCount">
-                        <option></option>
-                        <option></option>
-                        <option></option>
+                            className="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                            id="typeDemmande"
+                            value={typeDemmande}
+                            onChange={(e) => setTypeDemmande(e.target.value)}
+                        >
+                            <option value="updateGrade">updateGrade</option>
+                            <option value="updatePost">updatePost</option>
+                            <option value="NmbreEnfs">NmbreEnfs</option>
+                            <option value="EtatCivil">EtatCivil</option>
                         </select>
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="justification">
-                        Justification :
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="justification">
+                            Justification :
                         </label>
-                        <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="justification" type="text" placeholder="Justification" />
+                        <InputText
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="justification"
+                            type="text"
+                            placeholder="Justification"
+                            value={justification}
+                            onChange={(e) => setJustification(e.target.value)}
+                        />
                     </div>
-                    
                 </Dialog>
             </div>
 

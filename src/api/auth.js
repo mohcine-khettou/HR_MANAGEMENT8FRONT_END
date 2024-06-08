@@ -5,7 +5,7 @@ import { getUserByEmail } from "./users.js";
 
 export const login = async(email , password)=>{
     try {
-        const {data : {accessToken}} = await customFetch.post('/login', {
+        const {data : {accessToken}} = await customFetch.post('/api/v1/auth/login', {
             email , password
         })
         // const userData =await getUserByEmail(jwtDecode(data.accessToken).sub)
