@@ -54,16 +54,25 @@ const MySidebar = () => {
                     icon="pi pi-file-o mr-2"
                     title="Demandes"
                   />
+                  {user.role === "RH" && (
+                    <SideLink
+                      link="/profs"
+                      icon="pi pi-user mr-2"
+                      title="Professeurs"
+                    />
+                  )}
                   <SideLink
                     link="/pieces"
                     icon="pi pi-paperclip mr-2"
                     title="Pièces jointes"
                   />
+                  
                   <SideLink
                     link="/messages"
                     icon="pi pi-comments mr-2"
                     title="Messages"
                   />
+                  
                 </ul>
                 <div className="mt-auto list-none pb-4" onClick={logout}>
                   <SideLink
@@ -80,4 +89,5 @@ const MySidebar = () => {
     </div>
   );
 };
+
 export default MySidebar;
