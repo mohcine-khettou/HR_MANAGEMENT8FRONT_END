@@ -5,7 +5,7 @@ import Profile from "../../assets/images/profile.jpg";
 import { useUserContext } from "../../context";
 const UserInfo = () => {
   const [selectedItem, setSelectedItem] = useState(
-    listItems.find((item) => item.id === 1)
+    listItems.find((item) => item.id === 4)
   );
   const { user } = useUserContext();
   const getListItemStyle = (id) => {
@@ -18,7 +18,7 @@ const UserInfo = () => {
   return (
     <div className="flex gap-[2%] items-start mt-8">
       {/* he're is the card of the user with the list of items */}
-      <Card className="flex-none w-[40%]">
+      <Card className="flex-none w-[40%] max-w-[400px]">
         <div className="flex items-center flex-col mb-10">
           <img
             className="w-52 h-52 rounded-full object-cover"

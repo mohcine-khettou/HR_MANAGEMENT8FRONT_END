@@ -92,6 +92,10 @@ p {
   animation: scale 1s ease;
 }
 
+.text-center .p-datatable .p-column-header-content {
+  justify-content: center;
+}
+
 section.authentification {
   position: relative;
   width: 100%;

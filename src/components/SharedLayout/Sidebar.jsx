@@ -1,13 +1,10 @@
 import { Sidebar } from "primereact/sidebar";
 import SideLink from "./SideLink";
-import {
-  getUserFromLocalStorage,
-  removeUserFromLocalStorage,
-} from "../../utils/localStorage";
+import { removeUserFromLocalStorage } from "../../utils/localStorage";
 import { useUserContext } from "../../context";
 
 const MySidebar = () => {
-  const { user } = useUserContext();
+  const { user, logout } = useUserContext();
   return (
     <div>
       <Sidebar
@@ -68,10 +65,7 @@ const MySidebar = () => {
                     title="Messages"
                   />
                 </ul>
-                <div
-                  className="mt-auto list-none pb-4"
-                  onClick={removeUserFromLocalStorage}
-                >
+                <div className="mt-auto list-none pb-4" onClick={logout}>
                   <SideLink
                     link="/login"
                     icon="pi pi-arrow-right mr-2"

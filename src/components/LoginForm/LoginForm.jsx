@@ -1,8 +1,5 @@
 import useLogin from "./useLogin";
 import AuthenticationInput from "./AuthenticationInput";
-import { getUserFromLocalStorage } from "../../utils/localStorage";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const LoginForm = () => {
   const { handleChange, handleSubmit, userCredentials } = useLogin();
