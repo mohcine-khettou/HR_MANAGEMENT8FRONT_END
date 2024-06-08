@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
+  removeUserFromLocalStorage,
 } from "../utils/localStorage";
 import { login as loginApi } from "../api/auth";
 import { getUserByEmail as getUserByEmailApi } from "../api/users";
@@ -26,7 +27,7 @@ const UserProvider = ({ children }) => {
     setUser({ ...user, accessToken });
   };
   const showMe = async () => {
-    const accessToken = user.accessToken;
+    const accessToken = user?.accessToken;
     if (accessToken) {
       const { data: user } = await getUserByEmailApi(
         jwtDecode(accessToken).sub
@@ -39,6 +40,10 @@ const UserProvider = ({ children }) => {
       setUser({ ...user, accessToken });
     }
   };
+  const logout = () => {
+    setUser(null);
+    removeUserFromLocalStorage();
+  };
   useEffect(() => {
     showMe();
   }, []);
@@ -48,6 +53,7 @@ const UserProvider = ({ children }) => {
       value={{
         user,
         login,
+        logout,
       }}
     >
       {children}

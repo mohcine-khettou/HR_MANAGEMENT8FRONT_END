@@ -1,24 +1,61 @@
 import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
-import { InputNumber } from "primereact/inputnumber";
 import { useState } from "react";
-import { FileUpload } from "primereact/fileupload";
+import { updateProfile as updateProfileApi } from "../../api/demandes";
+import { useUserContext } from "../../context";
+import { InputNumber } from "primereact/inputnumber";
 const UpdateProfile = () => {
   const [selectedField, setSelectedField] = useState(null);
-  const [value, setValue] = useState(null);
+  const [file, setFile] = useState(null);
   const fields = [
-    { name: "état civil", code: "état civil" },
-    { name: "grade", code: "grade" },
-    { name: "nombre d'enfants", code: "nombre d'enfants" },
+    { name: "état civil", code: "EtatCivil", serverName: "etatCivil" },
+    { name: "grade", code: "updateGrade", serverName: "grade" },
+    { name: "nombre d'enfants", code: "NmbreEnfs", serverName: "NmbrEnfs" },
   ];
+  const { user } = useUserContext();
+  const [value, setValue] = useState(null);
+  const handleFile = async (event) => {
+    const file = event.target.files[0];
+    setFile(file);
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!file) {
+      // error
+      console.log("file");
+      return;
+    }
+    console.log(file);
+    const { error } = updateProfileApi(user.doti, {
+      pieceJointe: file,
+      typeDemmande: selectedField.code,
+      serverNameField: selectedField.serverName,
+      newFieldValue: value.code || value,
+    });
+    if (error) {
+      // error
+    }
+  };
   const getInput = () => {
     const props = {
       value: value,
+      className:
+        "border border-[#dbe0e5] hover:border-[#04a9f5] focus:border-[#04a9f5] rounded-md transition duration-150 w-full",
       onChange: (e) => setValue(e.value),
       defaultValue: null,
     };
-    if (selectedField.name === "état civil") return <InputText {...props} />;
+    if (selectedField.name === "état civil")
+      return (
+        <Dropdown
+          options={[
+            { name: "célibataire", code: "Celibataire" },
+            { name: "marié(e)", code: "Marie" },
+            { name: "divorcé(e)", code: "divorce" },
+          ]}
+          optionLabel="name"
+          {...props}
+        />
+      );
     if (selectedField.name === "grade")
       return (
         <Dropdown
@@ -30,19 +67,17 @@ const UpdateProfile = () => {
           optionLabel="name"
         />
       );
-    return (
-      <InputNumber
-        className="border border-[#dbe0e5] hover:border-[#04a9f5] focus:border-[#04a9f5] rounded-md transition duration-150"
-        {...props}
-      />
-    );
+    return <InputNumber {...props} />;
   };
   return (
-    <Card className="p-0">
+    <Card className="p-0" onClick={(e) => e.stopPropagation()}>
       <div className="border-b border-b-[#dbe0e5] px-4 pb-5 pt-3 font-medium">
         Modifier le profile
       </div>
-      <form className="flex flex-col gap-2 px-4 pt-5">
+      <form
+        className="flex flex-col gap-2 px-4 pt-5 items-start"
+        onSubmit={handleSubmit}
+      >
         <label className="mb-2">Champs à modifier</label>
         <Dropdown
           value={selectedField}
@@ -50,22 +85,36 @@ const UpdateProfile = () => {
           className="w-full"
           options={fields}
           onChange={(e) => {
-            setSelectedField(e.value);
             setValue(null);
+            setSelectedField(e.value);
           }}
         />
         {selectedField && (
           <>
             <label className="mb-2 mt-3">Nouvelle valeur</label>
             {getInput()}
-            <label className="mb-2 mt-3">Justification</label>
-            <FileUpload
-              mode="basic"
-              name="demo[]"
-              url="/api/upload"
-              accept="image/*"
-              maxFileSize={10000}
+            <span className="mb-2 mt-3">Justification</span>
+
+            <label
+              htmlFor="justify"
+              className="px-3 py-[12px] border border-[#dbe0e5] hover:border-[#04a9f5] focus:border-[#04a9f5] rounded-md transition duration-150 w-full cursor-pointer capitalize"
+            >
+              {file ? file.name : "choisir un fichier"}
+            </label>
+
+            <input
+              type="file"
+              name="justify"
+              id="justify"
+              onChange={handleFile}
+              className="hidden"
             />
+            <button
+              type="submit"
+              className="px-3 py-[12px] bg-[#04a9f5] rounded-md transition duration-150 w-full cursor-pointer capitalize mt-3"
+            >
+              soumettre
+            </button>
           </>
         )}
       </form>

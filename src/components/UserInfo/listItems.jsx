@@ -1,5 +1,6 @@
 import CardInformations from "./CardInformations";
 import UpdateProfile from "./UpdateProfile";
+import UpgradeHistory from "./UpgradeHistory";
 const listItems = [
   {
     id: 1,
@@ -37,6 +38,11 @@ const listItems = [
     id: 3,
     title: "Modifier le profil",
     item: <UpdateProfile />,
+  },
+  {
+    id: 4,
+    title: "Historique Gradation",
+    item: <UpgradeHistory />,
   },
 ];
 

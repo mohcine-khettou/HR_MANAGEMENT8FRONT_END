@@ -49,6 +49,7 @@ const ProfDemande = () => {
             });
             if (response.status === 200) {
                 setDemandes([...demandes, response.data]);
+                fetchDemandes();
                 setVisible(false);
             } else {
                 console.error('Failed to add demande');
