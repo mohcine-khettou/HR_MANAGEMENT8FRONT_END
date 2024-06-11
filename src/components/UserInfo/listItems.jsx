@@ -1,10 +1,10 @@
 import CardInformations from "./CardInformations";
+import InfoProfessionnelles from "./InfoProfessionnelles";
 import UpdateProfile from "./UpdateProfile";
-import UpgradeHistory from "./UpgradeHistory";
 const listItems = [
   {
     id: 1,
-    title: "Informations personnels",
+    title: "Informations personnelles",
     fields: [
       { name: "nom" },
       { name: "prenom", label: "Prénom" },
@@ -13,9 +13,9 @@ const listItems = [
       { name: "dateNaissance", label: "date de naissance" },
       { name: "lieuNaissance", label: "lieu de naissance" },
       { name: "sexe" },
-      { name: "etatCivil", label: "état civil" },
+      { name: "etatCivil", label: "Situation matrimoniale" },
       { name: "nombreEnfants", label: "nombre d'enfant" },
-      { name: "cin" },
+      { name: "cin", label: "CIN" },
     ],
     render: (title, data, fields) => (
       <CardInformations data={data} title={title} fields={fields} />
@@ -23,26 +23,21 @@ const listItems = [
   },
   {
     id: 2,
-    title: "Informations professionels",
+    title: "Informations professionelles",
     fields: [
-      { name: "doti" },
       { name: "post" },
       { name: "grade" },
       { name: "echlon", label: "échelon" },
+      { name: "departement", label: "département" },
     ],
     render: (title, data, fields) => (
-      <CardInformations data={data} title={title} fields={fields} />
+      <InfoProfessionnelles data={data} title={title} fields={fields} />
     ),
   },
   {
     id: 3,
     title: "Modifier le profil",
     item: <UpdateProfile />,
-  },
-  {
-    id: 4,
-    title: "Historique Gradation",
-    item: <UpgradeHistory />,
   },
 ];
 

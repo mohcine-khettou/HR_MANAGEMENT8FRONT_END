@@ -1,8 +1,7 @@
 import { Sidebar } from "primereact/sidebar";
 import SideLink from "./SideLink";
-import { removeUserFromLocalStorage } from "../../utils/localStorage";
 import { useUserContext } from "../../context";
-
+import Logo from "../../assets/images/fsts_logo-footer.png";
 const MySidebar = () => {
   const { user, logout } = useUserContext();
   return (
@@ -18,8 +17,9 @@ const MySidebar = () => {
           >
             <div className="flex flex-column h-full">
               <div className="flex align-items-center justify-content-center px-4 py-3">
-                <span className="text-[2.5rem] text-white font-bold tracking-wide">
-                  FST SETTAT
+                <img src={Logo} alt="" className="w-[5rem] mr-3" />
+                <span className="text-[3.5rem] text-white font-bold tracking-wide">
+                  FSTS
                 </span>
               </div>
               {/* box containing basic user info */}
@@ -48,7 +48,7 @@ const MySidebar = () => {
               {/* links */}
               <div className="overflow-y-auto flex flex-col justify-between h-full">
                 <ul className="list-none p-0 m-0 overflow-hidden flex-grow">
-                  <SideLink link="/" icon="pi pi-home mr-2" title="Profile" />
+                  <SideLink link="/" icon="pi pi-home mr-2" title="Profil" />
                   <SideLink
                     link="/demandes"
                     icon="pi pi-file-o mr-2"
