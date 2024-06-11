@@ -6,7 +6,6 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-
 import { format } from 'date-fns';
 import { fetchEmployees } from '../../api/listProfs';
 
@@ -21,7 +20,7 @@ export const ListProfs = () => {
     const searchFields = [
         { label: 'Doti', value: 'doti' },
         { label: 'Nom', value: 'nom' },
-        { label: 'Prénom', value: 'prenom' },
+        { label: 'Département', value: 'departement' },
         { label: 'Date d\'effet', value: 'dateEffectGrade' },
         { label: 'CIN', value: 'cin' },
         { label: 'Role', value: 'role' }
@@ -128,6 +127,7 @@ export const ListProfs = () => {
                         <p><strong>Nombre d'Enfants:</strong> {selectedEmployee.nombreEnfants}</p>
                         <p><strong>Email:</strong> {selectedEmployee.email}</p>
                         <p><strong>Téléphone:</strong> {selectedEmployee.phoneNumber}</p>
+                        <p><strong>Département:</strong> {selectedEmployee.departement}</p>
                     </div>
                 )}
             </Dialog>

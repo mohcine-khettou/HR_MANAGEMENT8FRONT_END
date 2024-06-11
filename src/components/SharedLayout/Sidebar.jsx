@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Sidebar } from "primereact/sidebar";
 import SideLink from "./SideLink";
 import { removeUserFromLocalStorage } from "../../utils/localStorage";
@@ -5,6 +6,12 @@ import { useUserContext } from "../../context";
 
 const MySidebar = () => {
   const { user, logout } = useUserContext();
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
+
   return (
     <div>
       <Sidebar
@@ -49,11 +56,38 @@ const MySidebar = () => {
               <div className="overflow-y-auto flex flex-col justify-between h-full">
                 <ul className="list-none p-0 m-0 overflow-hidden flex-grow">
                   <SideLink link="/" icon="pi pi-home mr-2" title="Profile" />
-                  <SideLink
-                    link="/demandes"
-                    icon="pi pi-file-o mr-2"
-                    title="Demandes"
-                  />
+                  {user.role === "RH" ? (
+                    <>
+                      <div onClick={toggleDropdown} className="flex items-center cursor-pointer">
+                        <SideLink
+                          link="#"
+                          icon="pi pi-file-o mr-2"
+                          title="Demandes"
+                        />
+                        <i className={`pi ${dropdownVisible ? 'pi-chevron-up' : 'pi-chevron-down'} ml-2`}></i>
+                      </div>
+                      {dropdownVisible && (
+                        <>
+                          <SideLink
+                            link="/demandesRH"
+                            icon="pi pi-file-o mr-2 pl-6"
+                            title="Modification du profil"
+                          />
+                          <SideLink
+                            link="/demandesRH2"
+                            icon="pi pi-file-o mr-2 pl-6"
+                            title="Documents"
+                          />
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <SideLink
+                      link="/demandes"
+                      icon="pi pi-file-o mr-2"
+                      title="Demandes"
+                    />
+                  )}
                   {user.role === "RH" && (
                     <SideLink
                       link="/profs"
@@ -66,13 +100,18 @@ const MySidebar = () => {
                     icon="pi pi-paperclip mr-2"
                     title="Pièces jointes"
                   />
-                  
+                  {user.role === "RH" && (
+                  <SideLink
+                    link="/charts"
+                    icon="pi pi-chart-bar mr-2"
+                    title="Statistiques"
+                  />
+                  )}
                   <SideLink
                     link="/messages"
                     icon="pi pi-comments mr-2"
                     title="Messages"
                   />
-                  
                 </ul>
                 <div className="mt-auto list-none pb-4" onClick={logout}>
                   <SideLink

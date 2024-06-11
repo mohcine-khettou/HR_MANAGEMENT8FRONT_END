@@ -6,7 +6,7 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import axios from 'axios';
 
-const RhDemmande = () => {
+const RhDemmande2 = () => {
   const [demandes, setDemandes] = useState([]);
   const [visible, setVisible] = useState(false);
   const [selectedDemmande, setSelectedDemmande] = useState(null);
@@ -131,21 +131,9 @@ const RhDemmande = () => {
       <div className='flex justify-between items-center'>
         <div className='flex m-5 '>
           <i className="pi pi-file-o mr-2 text-[3.35rem]"></i>
-          <h1 className='text-[2.35rem] font-semibold normal-case	'>Demandes de modification du profil</h1>
+          <h1 className='text-[2.35rem] font-semibold normal-case'>Demandes des documents</h1>
         </div>
-      </div>
-      <div className="m-0 mb-0 card">
-        <DataTable value={autresDemandes} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }}>
-          <Column field="doti" header="Id" style={{ width: '5%' }}></Column>
-          <Column field="employeDto.nom" header="Nom d'employé" style={{ width: '20%' }}></Column>
-          <Column field="typeDemmande" header="Type de la demande" style={{ width: '20%' }}></Column>
-          <Column field="valeur" header="Valeur" body={valeurBodyTemplate} style={{ width: '20%' }}></Column>
-          <Column field="pieceJointe" header="Piece jointe" body={pieceJointeBodyTemplate} style={{ width: '20%' }}></Column>
-          <Column header="Action" body={actionBodyTemplate} style={{ width: '20%' }} />
-        </DataTable>
-      </div>
-
-      
+      </div>  
       
       <Dialog visible={visible} modal header={headerElement} footer={footerContent} style={{ width: '30rem' }} onHide={() => setVisible(false)}>
         <div className="mb-4">
@@ -163,8 +151,16 @@ const RhDemmande = () => {
         </div>
       </Dialog>
 
+      <div className="mt-3 mb-0 card">
+        <DataTable value={demandesSpecifiques} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }}>
+          <Column field="doti" header="Id" style={{ width: '20%' }}></Column>
+          <Column field="employeDto.nom" header="Nom d'employé" style={{ width: '20%' }}></Column>
+          <Column field="typeDemmande" header="Type de la demande" style={{ width: '20%' }}></Column>
+          <Column header="Action" body={actionBodyTemplate} style={{ width: '20%' }} />
+        </DataTable>
+      </div>
     </div>
   );
 }
 
-export default RhDemmande;
+export default RhDemmande2;
