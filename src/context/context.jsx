@@ -13,11 +13,15 @@ const AppContext = React.createContext();
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(getUserFromLocalStorage());
   const login = async (email, password) => {
-    const { data: accessToken } = await loginApi(email, password);
+    const {
+      data: { accessToken },
+    } = await loginApi(email, password);
+    console.log(accessToken);
     if (!accessToken) {
       // handle error
       return;
     }
+    addUserToLocalStorage({ accessToken });
     const { data: user } = await getUserByEmailApi(jwtDecode(accessToken).sub);
     if (!user) {
       // handle error
