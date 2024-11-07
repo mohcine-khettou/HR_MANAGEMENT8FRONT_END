@@ -3,7 +3,7 @@ import { DashboardHeadline, UserInfo } from "../components";
 const Profile = () => {
   return (
     <>
-      <DashboardHeadline title={"Profile"} />
+      {/* <DashboardHeadline title={"Profil"} /> */}
       <UserInfo />
     </>
   );

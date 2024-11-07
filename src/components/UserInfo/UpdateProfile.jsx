@@ -20,7 +20,7 @@ const UpdateProfile = () => {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!file) {
+    if (!file && !value) {
       // error
       console.log("file");
       return;
@@ -34,7 +34,10 @@ const UpdateProfile = () => {
     });
     if (error) {
       // error
+      return;
     }
+    setValue(null);
+    setFile(null);
   };
   const getInput = () => {
     const props = {
@@ -72,7 +75,7 @@ const UpdateProfile = () => {
   return (
     <Card className="p-0" onClick={(e) => e.stopPropagation()}>
       <div className="border-b border-b-[#dbe0e5] px-4 pb-5 pt-3 font-medium">
-        Modifier le profile
+        Modification du profil
       </div>
       <form
         className="flex flex-col gap-2 px-4 pt-5 items-start"

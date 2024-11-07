@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Charts.css';
 import {
-  BarChart,
-  XAxis,
-  YAxis,
+  PieChart,
+  Pie,
   Tooltip,
   Legend,
-  CartesianGrid,
-  Bar,
   ResponsiveContainer,
+  Cell
 } from "recharts";
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28FF6', '#F77E53', '#7DDF64'];
 
 export default function ProfesseurCharts() {
   const [professeurs, setProfesseurs] = useState([]);
@@ -34,8 +34,8 @@ export default function ProfesseurCharts() {
       count[key] = (count[key] || 0) + 1;
     });
     return Object.entries(count).map(([key, value]) => ({
-      attribute: key,
-      nombreProfesseurs: value
+      name: key,
+      value: value
     }));
   };
 
@@ -52,49 +52,97 @@ export default function ProfesseurCharts() {
           <div className="chart-row">
             <div className="chart-column">
               <h2 className="normal-case">Nombre de professeurs par grade</h2>
-              <BarChart width={600} height={350} data={gradeData} barSize={30}>
-                <XAxis dataKey="attribute" />
-                <YAxis ticks={[0, 10, 20, 30, 40, 50]} domain={[0, 50]} />
-                <Tooltip />
-                <Legend />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Bar dataKey="nombreProfesseurs" name="Nombre de professeurs" fill="#8884d8" />
-              </BarChart>
+              <ResponsiveContainer width="100%" height={450}>
+                <PieChart>
+                  <Pie
+                    data={gradeData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={120}
+                    fill="#8884d8"
+                    label
+                  >
+                    {gradeData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
             <div className="chart-column">
               <h2 className="normal-case">Nombre de professeurs par poste</h2>
-              <BarChart width={600} height={350} data={postData} barSize={30}>
-                <XAxis dataKey="attribute" />
-                <YAxis ticks={[0, 10, 20, 30, 40, 50]} domain={[0, 50]} />
-                <Tooltip />
-                <Legend />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Bar dataKey="nombreProfesseurs" name="Nombre de professeurs" fill="#8884d8" />
-              </BarChart>
+              <ResponsiveContainer width="100%" height={450}>
+                <PieChart>
+                  <Pie
+                    data={postData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={120}
+                    fill="#8884d8"
+                    label
+                  >
+                    {postData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </div>
           <div className="chart-row">
             <div className="chart-column">
               <h2 className="normal-case">Nombre de professeurs par département</h2>
-              <BarChart width={600} height={350} data={departementData} barSize={30}>
-                <XAxis dataKey="attribute" />
-                <YAxis ticks={[0, 10, 20, 30, 40, 50]} domain={[0, 50]} />
-                <Tooltip />
-                <Legend />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Bar dataKey="nombreProfesseurs" name="Nombre de professeurs" fill="#8884d8" />
-              </BarChart>
+              <ResponsiveContainer width="100%" height={450}>
+                <PieChart>
+                  <Pie
+                    data={departementData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={120}
+                    fill="#8884d8"
+                    label
+                  >
+                    {departementData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
             <div className="chart-column">
               <h2 className="normal-case">Nombre de professeurs par année de recrutement</h2>
-              <BarChart width={600} height={350} data={dateRecrutementData} barSize={30}>
-                <XAxis dataKey="attribute" />
-                <YAxis ticks={[0, 10, 20, 30, 40, 50]} domain={[0, 50]} />
-                <Tooltip />
-                <Legend />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Bar dataKey="nombreProfesseurs" name="Nombre de professeurs" fill="#8884d8" />
-              </BarChart>
+              <ResponsiveContainer width="100%" height={450}>
+                <PieChart>
+                  <Pie
+                    data={dateRecrutementData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={120}
+                    fill="#8884d8"
+                    label
+                  >
+                    {dateRecrutementData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>

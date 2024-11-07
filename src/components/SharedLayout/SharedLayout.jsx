@@ -8,7 +8,7 @@ const SharedLayout = () => {
   return (
     <>
       <Sidebar />
-      <main className="ml-80 mt-32 px-[5%]">
+      <main className="ml-80 mt-20 px-[5%]">
         <Outlet></Outlet>
       </main>
     </>

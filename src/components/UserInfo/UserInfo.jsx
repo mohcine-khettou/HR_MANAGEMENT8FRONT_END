@@ -5,7 +5,7 @@ import Profile from "../../assets/images/profile.jpg";
 import { useUserContext } from "../../context";
 const UserInfo = () => {
   const [selectedItem, setSelectedItem] = useState(
-    listItems.find((item) => item.id === 4)
+    listItems.find((item) => item.id === 1)
   );
   const { user } = useUserContext();
   const getListItemStyle = (id) => {
@@ -16,37 +16,49 @@ const UserInfo = () => {
   };
 
   return (
-    <div className="flex gap-[2%] items-start mt-8">
+    <div
+      style={{ minHeight: "calc(100vh - 8rem)" }}
+      className="flex items-center"
+    >
       {/* he're is the card of the user with the list of items */}
-      <Card className="flex-none w-[40%] max-w-[400px]">
-        <div className="flex items-center flex-col mb-10">
-          <img
-            className="w-52 h-52 rounded-full object-cover"
-            src={Profile}
-            alt=""
-          />
-          <span className="font-semibold mt-4 capitalize">
-            {user.prenom} {user.nom}
-          </span>
+      <div className="flex gap-[2%] items-start w-full">
+        <Card className="flex-none w-[40%] max-w-[400px]">
+          <div className="flex items-center flex-col mb-10">
+            <img
+              className="w-52 h-52 rounded-full object-cover"
+              src={Profile}
+              alt=""
+            />
+            <span className="font-semibold mt-4 capitalize">
+              {user.prenom} {user.nom}
+            </span>
+            <span className="font-semibold mt-2 capitalize">
+              DOTI : {user.doti}
+            </span>
+          </div>
+          <ul>
+            {listItems.map((item) => {
+              return (
+                <li
+                  className={getListItemStyle(item.id)}
+                  key={item.id}
+                  onClick={() => setSelectedItem(item)}
+                >
+                  <span>{item.title}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </Card>
+        <div className="flex-none w-[58%]">
+          {(selectedItem.render &&
+            selectedItem.render(
+              selectedItem.title,
+              user,
+              selectedItem.fields
+            )) ||
+            selectedItem.item}
         </div>
-        <ul>
-          {listItems.map((item) => {
-            return (
-              <li
-                className={getListItemStyle(item.id)}
-                key={item.id}
-                onClick={() => setSelectedItem(item)}
-              >
-                <span>{item.title}</span>
-              </li>
-            );
-          })}
-        </ul>
-      </Card>
-      <div className="flex-none w-[58%]">
-        {(selectedItem.render &&
-          selectedItem.render(selectedItem.title, user, selectedItem.fields)) ||
-          selectedItem.item}
       </div>
     </div>
   );

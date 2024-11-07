@@ -13,16 +13,21 @@ const AppContext = React.createContext();
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(getUserFromLocalStorage());
   const login = async (email, password) => {
-    const { data: accessToken } = await loginApi(email, password);
+    const {
+      data: { accessToken },
+    } = await loginApi(email, password);
+    console.log(accessToken);
     if (!accessToken) {
       // handle error
       return;
     }
+    addUserToLocalStorage({ accessToken });
     const { data: user } = await getUserByEmailApi(jwtDecode(accessToken).sub);
     if (!user) {
       // handle error
       return;
     }
+    if (user.role === "RH") user.role = "Responsable RH";
     addUserToLocalStorage({ ...user, accessToken });
     setUser({ ...user, accessToken });
   };
@@ -65,4 +70,4 @@ export const useUserContext = () => {
   return useContext(AppContext);
 };
 
-export default UserProvider;
+export default UserProvider;
