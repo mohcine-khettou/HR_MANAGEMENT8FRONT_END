@@ -10,8 +10,8 @@ const UserInfo = () => {
   const { user } = useUserContext();
   const getListItemStyle = (id) => {
     let className =
-      "py-3 px-5 hover:bg-[#04a9f51a] hover:text-[#04a9f5] cursor-pointer rounded-md mb-1";
-    if (id === selectedItem.id) className += " bg-[#04a9f51a] text-[#04a9f5]";
+      "py-3 px-5 hover:bg-primary-100 hover:text-primary-600 cursor-pointer rounded-md mb-1";
+    if (id === selectedItem.id) className += " bg-primary-100 text-primary-600";
     return className;
   };
 

@@ -27,7 +27,6 @@ const UserProvider = ({ children }) => {
       // handle error
       return;
     }
-    if (user.role === "RH") user.role = "Responsable RH";
     addUserToLocalStorage({ ...user, accessToken });
     setUser({ ...user, accessToken });
   };
@@ -70,4 +69,4 @@ export const useUserContext = () => {
   return useContext(AppContext);
 };
 
-export default UserProvider;
+export default UserProvider;
