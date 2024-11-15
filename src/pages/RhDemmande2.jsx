@@ -7,10 +7,10 @@ import { InputText } from "primereact/inputtext";
 import axios from "axios";
 import customFetch from "../utils/customFetch";
 import { Card } from "primereact/card";
-import { Paginator } from "primereact/paginator";
 import { HiSearch } from "react-icons/hi";
+import { Paginator } from "primereact/paginator";
 
-const RhDemmande = () => {
+const RhDemmande2 = () => {
   const [demandes, setDemandes] = useState([]);
   const [visible, setVisible] = useState(false);
   const [selectedDemmande, setSelectedDemmande] = useState(null);
@@ -44,10 +44,10 @@ const RhDemmande = () => {
   const pieceJointeBodyTemplate = (rowData) => {
     return (
       <Button
+        className="p-2"
         label="Télécharger"
         icon="pi pi-download"
         onClick={() => handleDownload(rowData.pieceJointe, rowData.doti)}
-        className="text-sm px-4"
       />
     );
   };
@@ -180,58 +180,6 @@ const RhDemmande = () => {
           </div>
         </div>
       </div>
-      <div className="border border-slate-300 rounded-md mt-10">
-        <DataTable
-          value={autresDemandes}
-          rows={5}
-          rowsPerPageOptions={[5, 10, 25, 50]}
-          tableStyle={{ minWidth: "50rem" }}
-        >
-          <Column field="doti" header="Id" style={{ width: "5%" }}></Column>
-          <Column
-            field="employeDto.nom"
-            header="Nom d'employé"
-            style={{ width: "20%" }}
-          ></Column>
-          <Column
-            field="typeDemmande"
-            header="Type de la demande"
-            style={{ width: "20%" }}
-          ></Column>
-          <Column
-            field="valeur"
-            header="Valeur"
-            body={valeurBodyTemplate}
-            style={{ width: "20%" }}
-          ></Column>
-          <Column
-            header="Status"
-            body={actionBodyTemplate}
-            style={{ width: "20%" }}
-          />
-          <Column
-            field="pieceJointe"
-            header="Piece jointe"
-            body={pieceJointeBodyTemplate}
-            style={{ width: "20%" }}
-          ></Column>
-        </DataTable>
-      </div>
-      <div className="">
-        <Paginator
-          totalRecords={autresDemandes.length}
-          rowsPerPageOptions={[5, 10, 20, 30]}
-          onPageChange={onPageChange}
-          style={{ marginTop: "1rem", position: "relative" }}
-          rows={rows}
-          first={first}
-          template={{
-            layout:
-              "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown ",
-          }}
-        />
-      </div>
-
       <Dialog
         visible={visible}
         modal
@@ -257,8 +205,46 @@ const RhDemmande = () => {
           />
         </div>
       </Dialog>
+
+      <div className="border border-slate-300 rounded-md mt-10">
+        <DataTable
+          value={demandesSpecifiques}
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          <Column field="doti" header="Id" style={{ width: "20%" }}></Column>
+          <Column
+            header="Nom d'employé"
+            body={(row) => `${row.employeDto.prenom} ${row.employeDto.nom}`}
+            style={{ width: "20%" }}
+          ></Column>
+          <Column
+            field="typeDemmande"
+            header="Type de la demande"
+            style={{ width: "20%" }}
+          ></Column>
+          <Column
+            header="Action"
+            body={actionBodyTemplate}
+            style={{ width: "20%" }}
+          />
+        </DataTable>
+      </div>
+      <div className="">
+        <Paginator
+          totalRecords={autresDemandes.length}
+          rowsPerPageOptions={[5, 10, 20, 30]}
+          onPageChange={onPageChange}
+          style={{ marginTop: "1rem", position: "relative" }}
+          rows={rows}
+          first={first}
+          template={{
+            layout:
+              "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown ",
+          }}
+        />
+      </div>
     </Card>
   );
 };
 
-export default RhDemmande;
+export default RhDemmande2;

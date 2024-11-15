@@ -5,6 +5,7 @@ import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import axios from "axios";
+import customFetch from "../../utils/customFetch";
 
 export const Demande = () => {
   const [visible, setVisible] = useState(false);
@@ -40,8 +41,8 @@ export const Demande = () => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/demmandes/add",
+      const response = await customFetch.post(
+        "/api/v1/demmandes/add",
         newDemmande
       );
       if (response.status === 201) {
@@ -57,9 +58,7 @@ export const Demande = () => {
 
   const fetchDemandes = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/v1/employes${id}`
-      );
+      const response = await customFetch.get(`/api/v1/employes${id}`);
       if (response.status === 200) {
         const employe = response.data;
         const formattedDemandes = employe.demmandeCollection.map((demande) => ({
@@ -83,8 +82,8 @@ export const Demande = () => {
 
   const deleteDemmande = async (idDemmande) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:8080/api/v1/demmandes/delete/${idDemmande}`
+      const response = await customFetch.delete(
+        `/api/v1/demmandes/delete/${idDemmande}`
       );
       if (response.status === 204) {
         const updatedDemandes = demandes.filter(
