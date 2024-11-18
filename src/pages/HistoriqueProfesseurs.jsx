@@ -1,122 +1,144 @@
+import React, { useEffect, useState } from "react";
 import { Card } from "primereact/card";
-import { Column } from "primereact/column";
-import { DataTable } from "primereact/datatable";
-import React from "react";
+import { getAllSituations } from "../api/historique";
+
 
 const HistoriqueProfesseurs = () => {
-  const employees = [
-    {
-      id: 1438670,
-      name: "هند العسيلة",
-      currentRank: 3,
-      currentCode: 660,
-      currentDate: "2022/06/03",
-      proposedRank: 4,
-      proposedCode: 720,
-      proposedDate: "2024/06/03",
-    },
-    {
-      id: 1654931,
-      name: "سناء الصباع",
-      currentRank: 3,
-      currentCode: 660,
-      currentDate: "2022/06/05",
-      proposedRank: 4,
-      proposedCode: 720,
-      proposedDate: "2024/06/05",
-    },
-    {
-      id: 1655363,
-      name: "سارة أزرق",
-      currentRank: 2,
-      currentCode: 620,
-      currentDate: "2022/03/17",
-      proposedRank: 3,
-      proposedCode: 660,
-      proposedDate: "2024/03/17",
-    },
-    {
-      id: 1233406,
-      name: "حميد الغريفي",
-      currentRank: 3,
-      currentCode: 660,
-      currentDate: "2022/05/05",
-      proposedRank: 3,
-      proposedCode: 660,
-      proposedDate: "2024/05/05",
-    },
-    {
-      id: 1410263,
-      name: "سعيد الكحجالي",
-      currentRank: 3,
-      currentCode: 660,
-      currentDate: "2022/01/02",
-      proposedRank: 4,
-      proposedCode: 720,
-      proposedDate: "2024/01/02",
-    },
-  ];
+  const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [filterGrade, setFilterGrade] = useState("");
+  const [filterPost, setFilterPost] = useState("");
+
+  useEffect(() => {
+    
+    getAllSituations()
+      .then(({ data, error }) => {
+        if (data) {
+          setEmployees(data);
+          setFilteredEmployees(data);
+        }
+        if (error) {
+          console.error("Erreur lors de la récupération des données :", error);
+        }
+      })
+      .catch((error) => console.error("Erreur non gérée :", error));
+  }, []);
+
+  const mapEchlon = (echlon) => {
+    if (!echlon) return "";
+    const mapping = {
+      echlonA: 1,
+      echlonB: 2,
+      echlonC: 3,
+      echlonD: 4,
+      echlonE: 5,
+    };
+    return mapping[echlon] || echlon;
+  };
+
+  const mapPost = (post) => {
+    if (!post) return "";
+    const mapping = {
+      PA: "MC",
+      PH: "MCH",
+    };
+    return mapping[post] || post;
+  };
+
+  useEffect(() => {
+    let filtered = employees;
+
+    if (filterGrade) {
+      filtered = filtered.filter((employee) => employee.grade === filterGrade);
+    }
+    if (filterPost) {
+      filtered = filtered.filter((employee) => employee.post === filterPost);
+    }
+
+    setFilteredEmployees(filtered);
+  }, [filterGrade, filterPost, employees]);
 
   return (
     <Card>
+      <div style={{ marginBottom: "20px" }}>
+        <label htmlFor="gradeFilter" style={{ marginRight: "10px" }}>
+          Filtrer par Grade :
+        </label>
+        <select
+          id="gradeFilter"
+          value={filterGrade}
+          onChange={(e) => setFilterGrade(e.target.value)}
+          style={{ marginRight: "20px" }}
+        >
+          <option value="">Tous</option>
+          <option value="gradeA">Grade A</option>
+          <option value="gradeB">Grade B</option>
+          <option value="gradeC">Grade C</option>
+          <option value="gradeD">Grade D</option>
+        </select>
+
+        <label htmlFor="postFilter" style={{ marginRight: "10px" }}>
+          Filtrer par Poste :
+        </label>
+        <select
+          id="postFilter"
+          value={filterPost}
+          onChange={(e) => setFilterPost(e.target.value)}
+        >
+          <option value="">Tous</option>
+          <option value="PA">MC</option>
+          <option value="PH">MCH</option>
+          <option value="PES">PES</option>
+        </select>
+      </div>
+
       <table
         className="p-datatable"
         style={{ width: "100%", borderCollapse: "collapse" }}
       >
-        {/* Header */}
         <thead className="p-datatable-thead">
           <tr>
-            <th
-              className="p-sortable-column border-r border-l border-t"
-              rowSpan="2"
-            >
+            <th className="p-sortable-column border-r border-l border-t" rowSpan="2">
               Doti
             </th>
-            <th
-              className="p-sortable-column border-r border-l border-t"
-              rowSpan="2"
-            >
+            <th className="p-sortable-column border-r border-l border-t" rowSpan="2">
               Nom complet
             </th>
-            <th
-              className="p-sortable-column border-r border-l border-t"
-              colSpan="2"
-            >
+            <th className="p-sortable-column border-r border-l border-t" rowSpan="2">
+              Poste
+            </th>
+            <th className="p-sortable-column border-r border-l border-t" colSpan="2">
               La situation actuelle
             </th>
-            <th
-              className="p-sortable-column border-r border-l border-t"
-              colSpan="2"
-            >
+            <th className="p-sortable-column border-r border-l border-t" colSpan="2">
               La situation proposée
             </th>
           </tr>
           <tr>
-            <th className="p-sortable-column border-r border-l border-t">
-              Grade
-            </th>
-            <th className="p-sortable-column border-r border-l border-t">
-              Ancienneté
-            </th>
-            <th className="p-sortable-column border-r border-l border-t">
-              Grade
-            </th>
-            <th className="p-sortable-column border-r border-l border-t">
-              {" "}
-              date d'effet
-            </th>
+            <th className="p-sortable-column border-r border-l border-t">Échelon</th>
+            <th className="p-sortable-column border-r border-l border-t">Ancienneté</th>
+            <th className="p-sortable-column border-r border-l border-t">Échelon</th>
+            <th className="p-sortable-column border-r border-l border-t">Date d'effet</th>
           </tr>
         </thead>
-        {/* Body */}
         <tbody className="p-datatable-tbody">
-          {employees.map((employee, index) => (
+          {filteredEmployees.map((employee, index) => (
             <tr key={index}>
-              <td className="border-r border-l">{employee.id}</td>
-              <td className="border-r border-l">{employee.name}</td>
-              <td className="border-r border-l">{employee.currentRank}</td>
-              <td className="border-r border-l">{employee.currentDate}</td>
-              <td className="border-r border-l">{employee.proposedRank}</td>
-              <td className="border-r border-l">{employee.proposedDate}</td>
+              <td className="border-r border-l">{employee.doti}</td>
+              <td className="border-r border-l">
+                {employee.nom} {employee.prenom}
+              </td>
+              <td className="border-r border-l">{mapPost(employee.post)}</td>
+              <td className="border-r border-l">{mapEchlon(employee.echlon)}</td>
+              <td className="border-r border-l">
+                {new Date(employee.dateEffectEchlon).toLocaleDateString()}
+              </td>
+              <td className="border-r border-l">
+                {mapEchlon(employee.proposedEchlon)}
+              </td>
+              <td className="border-r border-l">
+                {new Date(employee.proposedDateEffectEchelon).toLocaleDateString()}
+              </td>
             </tr>
           ))}
         </tbody>

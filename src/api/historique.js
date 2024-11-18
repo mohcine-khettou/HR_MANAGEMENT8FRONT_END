@@ -27,3 +27,18 @@ export const getHistoriqueByDoti = async (doti) => {
     return { error, data: null };
   }
 };
+
+
+export const getAllSituations = async () => {
+  try {
+    const { data } = await customFetch.get("/api/v1/employes/situations");
+    console.log("Données récupérées :", data);
+    return { data, error: null };
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des situations des employés:",
+      error
+    );
+    return { error, data: null };
+  }
+};
