@@ -99,25 +99,21 @@ const InfoProfessionnelles = ({ data, fields }) => {
             field="grade"
             body={(rowData) => bodyTemplate(rowData.grade)}
             header="grade"
-            className="text-center"
           ></Column>
           <Column
             field="post"
             body={(rowData) => bodyTemplate(rowData.post)}
             header="poste"
-            className="text-center"
           ></Column>
           <Column
             field="echelon"
             body={(rowData) => bodyTemplate(rowData.echelon)}
             header="echelon"
-            className="text-center"
           />
           <Column
             field="date"
             body={(rowData) => bodyTemplate(rowData.date)}
             header="date d'effet"
-            className="text-center"
           />
         </DataTable>
       </div>

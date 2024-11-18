@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -74,7 +74,7 @@ const RhDemmande = () => {
       .post(
         `http://localhost:8080/api/v1/demmandes/accepterDemmandeUpdateProfesseur/${idDemmande}`
       )
-      .then((response) => {
+      .then(() => {
         fetchDemandes();
       })
       .catch((error) => console.error("Error accepting request:", error));
@@ -96,7 +96,7 @@ const RhDemmande = () => {
           },
         }
       )
-      .then((response) => {
+      .then(() => {
         fetchDemandes();
         setVisible(false);
         setJustification("");

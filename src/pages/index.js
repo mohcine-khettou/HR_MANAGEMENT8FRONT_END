@@ -1,9 +1,6 @@
+import Demande from "./Demande";
+import HistoriqueProfesseurs from "./HistoriqueProfesseurs";
+import Login from "./Login";
+import Profile from "./Profile";
 
-import Demande from './Demande'
-import Login from './Login'
-import Profile from './Profile'
-
-
-export {
-    Login , Profile , Demande
-}
+export { Login, Profile, Demande, HistoriqueProfesseurs };

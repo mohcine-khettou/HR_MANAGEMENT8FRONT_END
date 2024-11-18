@@ -1,18 +1,12 @@
-import { useState } from "react";
 import { Sidebar } from "primereact/sidebar";
 import SideLink from "./SideLink";
-import { removeUserFromLocalStorage } from "../../utils/localStorage";
 import { useUserContext } from "../../context";
 import { HiUser } from "react-icons/hi";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
-
+import { BsClockHistory } from "react-icons/bs";
+import Logo from "../../assets/images/fsts.png";
 const MySidebar = () => {
   const { user, logout } = useUserContext();
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-
-  const toggleDropdown = () => {
-    setDropdownVisible(!dropdownVisible);
-  };
 
   return (
     <div>
@@ -26,10 +20,8 @@ const MySidebar = () => {
             className="h-screen hidden lg:block flex-shrink-0 absolute lg:static left-0 top-0 z-1 bg-[#00082b]"
           >
             <div className="flex flex-col h-full">
-              <div className="flex align-items-center justify-content-center px-4 py-3">
-                <span className="text-[2.5rem] text-white font-bold tracking-wide">
-                  FST SETTAT
-                </span>
+              <div className="flex items-center justify-center px-4 py-3">
+                <img src={Logo} alt="logo" />
               </div>
               {/* box containing basic user info */}
               <div className="flex flex-col items-center my-14">
@@ -91,6 +83,13 @@ const MySidebar = () => {
                       path="/profs"
                       icon={<HiUser size={20} />}
                       label="Professeurs"
+                    />
+                  )}
+                  {user.role === "RH" && (
+                    <SideLink
+                      path="/historiques-professeurs"
+                      icon={<BsClockHistory size={20} />}
+                      label="Historique des professeurs"
                     />
                   )}
                   <SideLink

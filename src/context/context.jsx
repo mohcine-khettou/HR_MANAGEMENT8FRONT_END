@@ -7,6 +7,7 @@ import {
 import { login as loginApi } from "../api/auth";
 import { getUserByEmail as getUserByEmailApi } from "../api/users";
 import { jwtDecode } from "jwt-decode";
+import { setLogoutFunction } from "../utils/customFetch";
 
 const AppContext = React.createContext();
 
@@ -49,6 +50,7 @@ const UserProvider = ({ children }) => {
     removeUserFromLocalStorage();
   };
   useEffect(() => {
+    setLogoutFunction(logout);
     showMe();
   }, []);
 

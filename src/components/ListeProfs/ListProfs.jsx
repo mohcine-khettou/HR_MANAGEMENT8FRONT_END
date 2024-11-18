@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { fetchEmployees } from "../../api/listProfs";
 import { HiSearch } from "react-icons/hi";
 import { Paginator } from "primereact/paginator";
+import { getAllHistorique } from "../../api/historique";
 
 export const ListProfs = () => {
   const [history, setHistory] = useState([]);
@@ -74,18 +75,6 @@ export const ListProfs = () => {
     }, 500);
     setDisplayDialog(false);
   };
-
-  const dialogFooter = (
-    <div>
-      <Button
-        className="p-1"
-        label="Fermer"
-        icon="pi pi-times"
-        onClick={hideDialog}
-      />
-    </div>
-  );
-
   const handleSearch = () => {
     if (searchField && searchValue) {
       const filteredData = history.filter((item) =>
@@ -102,7 +91,9 @@ export const ListProfs = () => {
   useEffect(() => {
     handleSearch();
   }, [searchValue, searchField]);
-
+  useEffect(() => {
+    getAllHistorique();
+  }, []);
   return (
     <Card className="p-0">
       <div className="p-4">
@@ -132,22 +123,17 @@ export const ListProfs = () => {
       </div>
       <div className="border border-slate-300 rounded-md mt-10">
         <DataTable value={filteredHistory}>
-          <Column field="doti" header="Doti" className="text-center" />
-          <Column field="nom" header="Nom" className="text-center" />
-          <Column field="prenom" header="Prénom" className="text-center" />
+          <Column field="doti" header="Doti" />
+          <Column field="nom" header="Nom" />
+          <Column field="prenom" header="Prénom" />
           <Column
             field="dateEffectGrade"
             header="Date d'effet"
-            className="text-center"
             body={(rowData) => formatDate(rowData.dateEffectGrade)}
           />
-          <Column field="cin" header="CIN" className="text-center" />
-          <Column field="role" header="Role" className="text-center" />
-          <Column
-            body={actionBodyTemplate}
-            header="Détails"
-            className="text-center"
-          />
+          <Column field="cin" header="CIN" />
+          <Column field="role" header="Role" />
+          <Column body={actionBodyTemplate} header="Détails" />
         </DataTable>
       </div>
       <div className="">
