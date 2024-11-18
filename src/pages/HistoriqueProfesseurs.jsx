@@ -66,40 +66,57 @@ const HistoriqueProfesseurs = () => {
         {/* Header */}
         <thead className="p-datatable-thead">
           <tr>
-            <th className="p-sortable-column" rowSpan="2">
-              رقم التاجر
+            <th
+              className="p-sortable-column border-r border-l border-t"
+              rowSpan="2"
+            >
+              Doti
             </th>
-            <th className="p-sortable-column" rowSpan="2">
-              الاسم الكامل
+            <th
+              className="p-sortable-column border-r border-l border-t"
+              rowSpan="2"
+            >
+              Nom complet
             </th>
-            <th className="p-sortable-column" colSpan="3">
-              الوضعية الحالية
+            <th
+              className="p-sortable-column border-r border-l border-t"
+              colSpan="2"
+            >
+              La situation actuelle
             </th>
-            <th className="p-sortable-column" colSpan="3">
-              الوضعية المقترحة
+            <th
+              className="p-sortable-column border-r border-l border-t"
+              colSpan="2"
+            >
+              La situation proposée
             </th>
           </tr>
           <tr>
-            <th className="p-sortable-column">الرتبة</th>
-            <th className="p-sortable-column">الرقم الاستدلالي</th>
-            <th className="p-sortable-column">الأقدمية</th>
-            <th className="p-sortable-column">الرتبة</th>
-            <th className="p-sortable-column">الرقم الاستدلالي</th>
-            <th className="p-sortable-column">تاريخ المفعول</th>
+            <th className="p-sortable-column border-r border-l border-t">
+              Grade
+            </th>
+            <th className="p-sortable-column border-r border-l border-t">
+              Ancienneté
+            </th>
+            <th className="p-sortable-column border-r border-l border-t">
+              Grade
+            </th>
+            <th className="p-sortable-column border-r border-l border-t">
+              {" "}
+              date d'effet
+            </th>
           </tr>
         </thead>
         {/* Body */}
         <tbody className="p-datatable-tbody">
           {employees.map((employee, index) => (
             <tr key={index}>
-              <td>{employee.id}</td>
-              <td>{employee.name}</td>
-              <td>{employee.currentRank}</td>
-              <td>{employee.currentCode}</td>
-              <td>{employee.currentDate}</td>
-              <td>{employee.proposedRank}</td>
-              <td>{employee.proposedCode}</td>
-              <td>{employee.proposedDate}</td>
+              <td className="border-r border-l">{employee.id}</td>
+              <td className="border-r border-l">{employee.name}</td>
+              <td className="border-r border-l">{employee.currentRank}</td>
+              <td className="border-r border-l">{employee.currentDate}</td>
+              <td className="border-r border-l">{employee.proposedRank}</td>
+              <td className="border-r border-l">{employee.proposedDate}</td>
             </tr>
           ))}
         </tbody>
