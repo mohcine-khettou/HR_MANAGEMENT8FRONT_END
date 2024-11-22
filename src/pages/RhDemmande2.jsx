@@ -70,9 +70,9 @@ const RhDemmande2 = () => {
   };
 
   const handleAccept = (idDemmande) => {
-    axios
+    customFetch
       .post(
-        `http://localhost:8080/api/v1/demmandes/accepterDemmandeUpdateProfesseur/${idDemmande}`
+        `/api/v1/demmandes/accepterDemmandeUpdateProfesseur/${idDemmande}`
       )
       .then((response) => {
         fetchDemandes();
@@ -86,9 +86,9 @@ const RhDemmande2 = () => {
   };
 
   const handleSendJustification = () => {
-    axios
+    customFetch
       .post(
-        `http://localhost:8080/api/v1/demmandes/refuseDemmandeUpdateProfesseur/${selectedDemmande}`,
+        `/api/v1/demmandes/refuseDemmandeUpdateProfesseur/${selectedDemmande}`,
         justification,
         {
           headers: {
