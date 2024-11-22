@@ -16,4 +16,25 @@ export const updateProfile =async (doti , {pieceJointe , typeDemmande , serverNa
         return {error , data : null}
     }
 
+
 }
+const fetchDemandes = () => {
+    customFetch
+      .get("/api/v1/demmandes")
+      .then((response) => {
+        setDemandes(response.data);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  };
+
+
+export const handleAccept = (idDemmande) => {
+    customFetch
+      .post(
+        `/api/v1/demmandes/accepterDemmandeUpdateProfesseur/${idDemmande}`
+      )
+      .then(() => {
+        fetchDemandes();
+      })
+      .catch((error) => console.error("Error accepting request:", error));
+  };
