@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "primereact/card";
 import { getAllSituations } from "../api/historique";
-
+import { Dropdown } from "primereact/dropdown";
 
 const HistoriqueProfesseurs = () => {
   const [employees, setEmployees] = useState([]);
@@ -10,7 +10,6 @@ const HistoriqueProfesseurs = () => {
   const [filterPost, setFilterPost] = useState("");
 
   useEffect(() => {
-    
     getAllSituations()
       .then(({ data, error }) => {
         if (data) {
@@ -59,37 +58,47 @@ const HistoriqueProfesseurs = () => {
   }, [filterGrade, filterPost, employees]);
 
   return (
-    <Card>
-      <div style={{ marginBottom: "20px" }}>
-        <label htmlFor="gradeFilter" style={{ marginRight: "10px" }}>
-          Filtrer par Grade :
+    <Card className="mb-10">
+      <div className="w-full grid md:grid-cols-2 mb-10 gap-8">
+        <label className={"block w-full"}>
+          <span className="block capitalize mb-1 font-medium">
+            Filtrer par Grade
+          </span>
+          <Dropdown
+            value={filterGrade}
+            options={[
+              { label: "Tous", code: "" },
+              { label: "Grade A", code: "gradeA" },
+              { label: "Grade B", code: "gradeB" },
+              { label: "Grade C", code: "gradeC" },
+              { label: "Grade D", code: "gradeD" },
+            ]}
+            onChange={(e) => setFilterGrade(e.value)}
+            placeholder="Filtrer par Grade"
+            optionLabel="label"
+            optionValue="code"
+            className="w-full"
+          />
         </label>
-        <select
-          id="gradeFilter"
-          value={filterGrade}
-          onChange={(e) => setFilterGrade(e.target.value)}
-          style={{ marginRight: "20px" }}
-        >
-          <option value="">Tous</option>
-          <option value="gradeA">Grade A</option>
-          <option value="gradeB">Grade B</option>
-          <option value="gradeC">Grade C</option>
-          <option value="gradeD">Grade D</option>
-        </select>
-
-        <label htmlFor="postFilter" style={{ marginRight: "10px" }}>
-          Filtrer par Poste :
+        <label className={"block w-full"}>
+          <span className="block capitalize mb-1 font-medium">
+            Filtrer par poste
+          </span>
+          <Dropdown
+            value={filterPost}
+            options={[
+              { label: "Tous", code: "" },
+              { label: "MC", code: "PA" },
+              { label: "MCH", code: "PH" },
+              { label: "PES", code: "PES" },
+            ]}
+            onChange={(e) => setFilterPost(e.value)}
+            placeholder="Filtrer par Poste"
+            optionLabel="label"
+            optionValue="code"
+            className="w-full"
+          />
         </label>
-        <select
-          id="postFilter"
-          value={filterPost}
-          onChange={(e) => setFilterPost(e.target.value)}
-        >
-          <option value="">Tous</option>
-          <option value="PA">MC</option>
-          <option value="PH">MCH</option>
-          <option value="PES">PES</option>
-        </select>
       </div>
 
       <table
@@ -98,27 +107,50 @@ const HistoriqueProfesseurs = () => {
       >
         <thead className="p-datatable-thead">
           <tr>
-            <th className="p-sortable-column border-r border-l border-t" rowSpan="2">
+            <th
+              className="p-sortable-column border-r border-l border-t"
+              rowSpan="2"
+            >
               Doti
             </th>
-            <th className="p-sortable-column border-r border-l border-t" rowSpan="2">
+            <th
+              className="p-sortable-column border-r border-l border-t"
+              rowSpan="2"
+            >
               Nom complet
             </th>
-            <th className="p-sortable-column border-r border-l border-t" rowSpan="2">
+            <th
+              className="p-sortable-column border-r border-l border-t"
+              rowSpan="2"
+            >
               Poste
             </th>
-            <th className="p-sortable-column border-r border-l border-t" colSpan="2">
+            <th
+              className="p-sortable-column border-r border-l border-t"
+              colSpan="2"
+            >
               La situation actuelle
             </th>
-            <th className="p-sortable-column border-r border-l border-t" colSpan="2">
+            <th
+              className="p-sortable-column border-r border-l border-t"
+              colSpan="2"
+            >
               La situation proposée
             </th>
           </tr>
           <tr>
-            <th className="p-sortable-column border-r border-l border-t">Échelon</th>
-            <th className="p-sortable-column border-r border-l border-t">Ancienneté</th>
-            <th className="p-sortable-column border-r border-l border-t">Échelon</th>
-            <th className="p-sortable-column border-r border-l border-t">Date d'effet</th>
+            <th className="p-sortable-column border-r border-l border-t">
+              Échelon
+            </th>
+            <th className="p-sortable-column border-r border-l border-t">
+              Ancienneté
+            </th>
+            <th className="p-sortable-column border-r border-l border-t">
+              Échelon
+            </th>
+            <th className="p-sortable-column border-r border-l border-t">
+              Date d'effet
+            </th>
           </tr>
         </thead>
         <tbody className="p-datatable-tbody">
@@ -129,7 +161,9 @@ const HistoriqueProfesseurs = () => {
                 {employee.nom} {employee.prenom}
               </td>
               <td className="border-r border-l">{mapPost(employee.post)}</td>
-              <td className="border-r border-l">{mapEchlon(employee.echlon)}</td>
+              <td className="border-r border-l">
+                {mapEchlon(employee.echlon)}
+              </td>
               <td className="border-r border-l">
                 {new Date(employee.dateEffectEchlon).toLocaleDateString()}
               </td>
@@ -137,7 +171,9 @@ const HistoriqueProfesseurs = () => {
                 {mapEchlon(employee.proposedEchlon)}
               </td>
               <td className="border-r border-l">
-                {new Date(employee.proposedDateEffectEchelon).toLocaleDateString()}
+                {new Date(
+                  employee.proposedDateEffectEchelon
+                ).toLocaleDateString()}
               </td>
             </tr>
           ))}

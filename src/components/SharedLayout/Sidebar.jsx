@@ -92,11 +92,7 @@ const MySidebar = () => {
                       label="Historique des professeurs"
                     />
                   )}
-                  <SideLink
-                    path="/pieces"
-                    icon={<i className="pi pi-paperclip"></i>}
-                    label="Pièces jointes"
-                  />
+
                   {user.role === "RH" && (
                     <SideLink
                       path="/charts"
@@ -104,11 +100,6 @@ const MySidebar = () => {
                       label="Statistiques"
                     />
                   )}
-                  <SideLink
-                    path="/messages"
-                    icon={<i className="pi pi-comments"></i>}
-                    label="Messages"
-                  />
                 </ul>
                 <div className="mt-auto list-none pb-4" onClick={logout}>
                   <SideLink

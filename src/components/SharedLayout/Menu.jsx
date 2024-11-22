@@ -31,7 +31,7 @@ const Menu = ({ userName, email, logout }) => {
             className="flex gap-4 px-5 py-2 items-center mb-2"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="rounded-full bg-black text-white size-12 text-2xl flex justify-center items-center flex-none">
+            <div className="rounded-full bg-primary-800 text-white size-12 text-2xl flex justify-center items-center flex-none">
               {userName.slice(0, 1).toUpperCase()}
             </div>
             <div className="text-sm">

@@ -11,13 +11,13 @@ import { fetchEmployees } from "../../api/listProfs";
 import { HiSearch } from "react-icons/hi";
 import { Paginator } from "primereact/paginator";
 import { getAllHistorique } from "../../api/historique";
+import ProfDetails from "./ProfDetails";
 
 export const ListProfs = () => {
   const [history, setHistory] = useState([]);
   const [filteredHistory, setFilteredHistory] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [displayDialog, setDisplayDialog] = useState(false);
-  const [searchField, setSearchField] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(5);
@@ -26,14 +26,6 @@ export const ListProfs = () => {
     setRows(event.rows);
     console.log(event.first, event.rows, event.page);
   };
-  const searchFields = [
-    { label: "Doti", value: "doti" },
-    { label: "Nom", value: "nom" },
-    { label: "Département", value: "departement" },
-    { label: "Date d'effet", value: "dateEffectGrade" },
-    { label: "CIN", value: "cin" },
-    { label: "Role", value: "role" },
-  ];
 
   useEffect(() => {
     const loadEmployees = async () => {
@@ -76,24 +68,19 @@ export const ListProfs = () => {
     setDisplayDialog(false);
   };
   const handleSearch = () => {
-    if (searchField && searchValue) {
-      const filteredData = history.filter((item) =>
-        item[searchField]
-          .toString()
-          .toLowerCase()
-          .includes(searchValue.toLowerCase())
-      );
-      setFilteredHistory(filteredData);
-    } else {
-      setFilteredHistory(history);
-    }
+    const lowerSearchValue = searchValue.toLowerCase();
+    const newHistory = history.filter((employee) => {
+      return Object.values(employee).some((value) => {
+        if (value === null || value === undefined) return false;
+        return value.toString().toLowerCase().includes(lowerSearchValue);
+      });
+    });
+    setFilteredHistory(newHistory);
   };
   useEffect(() => {
     handleSearch();
-  }, [searchValue, searchField]);
-  useEffect(() => {
-    getAllHistorique();
-  }, []);
+  }, [searchValue]);
+
   return (
     <Card className="p-0">
       <div className="p-4">
@@ -113,16 +100,10 @@ export const ListProfs = () => {
               </span>
             </div>
           </div>
-          <Dropdown
-            value={searchField}
-            options={searchFields}
-            onChange={(e) => setSearchField(e.value)}
-            placeholder="Chercher par"
-          />
         </div>
       </div>
       <div className="border border-slate-300 rounded-md mt-10">
-        <DataTable value={filteredHistory}>
+        <DataTable value={filteredHistory.slice(first, first + rows)}>
           <Column field="doti" header="Doti" />
           <Column field="nom" header="Nom" />
           <Column field="prenom" header="Prénom" />
@@ -156,43 +137,10 @@ export const ListProfs = () => {
         style={{ width: "50vw" }}
         onHide={hideDialog}
         dismissableMask={true}
+        headerClassName="text-black"
       >
         {selectedEmployee && (
-          <div>
-            <p>
-              <strong>Date de Naissance:</strong>{" "}
-              {formatDate(selectedEmployee.dateNaissance)}
-            </p>
-            <p>
-              <strong>Lieu de Naissance:</strong>{" "}
-              {selectedEmployee.lieuNaissance}
-            </p>
-            <p>
-              <strong>Poste:</strong> {selectedEmployee.post}
-            </p>
-            <p>
-              <strong>État Civil:</strong> {selectedEmployee.etatCivil}
-            </p>
-            <p>
-              <strong>Échelon:</strong> {selectedEmployee.echlon}
-            </p>
-            <p>
-              <strong>Sexe:</strong> {selectedEmployee.sexe}
-            </p>
-            <p>
-              <strong>Nombre d'Enfants:</strong>{" "}
-              {selectedEmployee.nombreEnfants}
-            </p>
-            <p>
-              <strong>Email:</strong> {selectedEmployee.email}
-            </p>
-            <p>
-              <strong>Téléphone:</strong> {selectedEmployee.phoneNumber}
-            </p>
-            <p>
-              <strong>Département:</strong> {selectedEmployee.departement}
-            </p>
-          </div>
+          <ProfDetails selectedEmployee={selectedEmployee} />
         )}
       </Dialog>
     </Card>

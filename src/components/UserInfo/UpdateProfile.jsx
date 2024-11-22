@@ -4,8 +4,13 @@ import { useState } from "react";
 import { updateProfile as updateProfileApi } from "../../api/demandes";
 import { useUserContext } from "../../context";
 import { InputNumber } from "primereact/inputnumber";
+import { Button } from "primereact/button";
 const UpdateProfile = () => {
-  const [selectedField, setSelectedField] = useState(null);
+  const [selectedField, setSelectedField] = useState({
+    name: "état civil",
+    code: "EtatCivil",
+    serverName: "etatCivil",
+  });
   const [file, setFile] = useState(null);
   const fields = [
     { name: "état civil", code: "EtatCivil", serverName: "etatCivil" },
@@ -112,12 +117,12 @@ const UpdateProfile = () => {
               onChange={handleFile}
               className="hidden"
             />
-            <button
+            <Button
               type="submit"
-              className="px-3 py-[12px] bg-[#04a9f5] rounded-md transition duration-150 w-full cursor-pointer capitalize mt-3"
+              className="w-full mt-4 text-center flex justify-center"
             >
               soumettre
-            </button>
+            </Button>
           </>
         )}
       </form>
