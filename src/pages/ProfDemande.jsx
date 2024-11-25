@@ -5,21 +5,19 @@ import { Dialog } from "primereact/dialog";
 import { useUserContext } from "../context";
 import customFetch from "../utils/customFetch";
 import { useEffect, useState } from "react";
+import { Dropdown } from "primereact/dropdown";
 const ProfDemande = () => {
   const { user } = useUserContext();
   const [visible, setVisible] = useState(false);
   const [demandes, setDemandes] = useState([]);
-  const [typeDemmande, setTypeDemmande] = useState("");
-  const [pieceJointe, setPieceJointe] = useState(null);
-  const [justification, setJustification] = useState("");
+  const [typeDemmande, setTypeDemmande] = useState("Demande1");
   const id = user.doti;
-  const role = user.role;
 
   const fetchDemandes = async () => {
     try {
       const response = await customFetch.get(`/api/v1/demmandes/${id}`);
       if (response.status === 200) {
-        setDemandes(response.data);
+        setDemandes(response.data.reverse());
       } else {
         console.error("Failed to fetch demandes");
       }
@@ -60,28 +58,7 @@ const ProfDemande = () => {
       console.error("Error adding demande:", error);
     }
   };
-
-  const headerElement = (
-    <div className="inline-flex align-items-center justify-content-center gap-2">
-      <span className="font-bold white-space-nowrap">
-        Modification du profil
-      </span>
-    </div>
-  );
-
-  const footerContent = (
-    <div>
-      <Button
-        label="Envoyer"
-        icon="pi pi-check"
-        onClick={handleAddDemmande}
-        autoFocus
-      />
-    </div>
-  );
-
   const deleteDemmande = async (idDemmande) => {
-    console.log(idDemmande);
     try {
       const response = await customFetch.delete(
         `/api/v1/demmandes/delete/${idDemmande}`
@@ -111,12 +88,6 @@ const ProfDemande = () => {
     );
   };
 
-  const filteredDemandes = demandes.filter((demande) =>
-    ["Demande1", "Demande2", "Demande3", "Demande4"].includes(
-      demande.typeDemmande
-    )
-  );
-
   const formatDate = (date) => {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return new Date(date).toLocaleDateString("fr-FR", options);
@@ -125,63 +96,92 @@ const ProfDemande = () => {
   const dateTemplate = (rowData) => {
     return formatDate(rowData.dateDemmande);
   };
+  const statusBodyTemplate = (rowData) => {
+    if (rowData.status === "ACCEPTE") {
+      return (
+        <span className="inline-block px-3 py-1 rounded-full whitespace-nowrap text-sm font-medium bg-green-200 text-green-800">
+          Acceptée
+        </span>
+      );
+    }
+    if (rowData.status === "REFUSE") {
+      return (
+        <span className="inline-block px-3 py-1 rounded-full whitespace-nowrap text-sm font-medium bg-red-200 text-red-800">
+          Refusée
+        </span>
+      );
+    }
+    return (
+      <span className="inline-block px-3 py-1 rounded-full whitespace-nowrap text-sm font-medium bg-gray-200 text-gray-800">
+        {rowData.status}
+      </span>
+    );
+  };
 
   return (
-    <div>
+    <div className="">
       <>
-        <div className="flex justify-between items-center">
-          <div className="flex m-5 ">
-            <i className="pi pi-file-o mr-2 text-[3.35rem]"></i>
-            <h1 className="text-[2.35rem] font-semibold">Demandes</h1>
+        <Dialog
+          visible={visible}
+          modal
+          header={"Nouveau demande"}
+          onHide={() => {
+            setVisible(false);
+            setTypeDemmande("Demande1");
+          }}
+          className="w-[90vw] max-w-[650px]"
+          headerClassName="text-black"
+        >
+          <label className={"block w-full"}>
+            <span className="block capitalize mb-1 font-medium">
+              Type de la demande :
+            </span>
+            <Dropdown
+              value={typeDemmande}
+              options={[
+                { label: "Demande 1", code: "Demande1" },
+                { label: "Demande 2", code: "Demande2" },
+                { label: "Demande 3", code: "Demande3" },
+                { label: "Demande 4", code: "Demande4" },
+              ]}
+              onChange={(e) => setTypeDemmande(e.value)}
+              optionLabel="label"
+              optionValue="code"
+              className="w-full"
+            />
+          </label>
+          <div className="flex w-full justify-end mt-6">
+            <Button
+              label="Envoyer"
+              icon="pi pi-check"
+              onClick={handleAddDemmande}
+              autoFocus
+            />
           </div>
-          <Button
-            className="text-white px-3 py-[.75rem] transition duration-200 ease-in-out"
-            onClick={() => setVisible(true)}
-          >
-            Ajouter une Demande
-          </Button>
-          <Dialog
-            visible={visible}
-            modal
-            header={headerElement}
-            footer={footerContent}
-            style={{ width: "30rem" }}
-            onHide={() => setVisible(false)}
-          >
-            <div className="mb-4 mt-2">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="typeDemmande"
-              >
-                Type de la demande :
-              </label>
-              <select
-                className="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                id="typeDemmande"
-                value={typeDemmande}
-                onChange={(e) => setTypeDemmande(e.target.value)}
-              >
-                <option value="Demande1">Demande1</option>
-                <option value="Demande2">Demande2</option>
-                <option value="Demande3">Demande3</option>
-                <option value="Demande4">Demande4</option>
-              </select>
-            </div>
-          </Dialog>
-        </div>
+        </Dialog>
 
-        <div className="m-11 mb-0 card">
+        <div className="mb-0 p-card py-16">
+          <div className="flex justify-end items-center px-8 mb-8">
+            <Button
+              onClick={() => setVisible(true)}
+              icon="pi pi-plus"
+              label="Ajouter"
+            ></Button>
+          </div>
           <DataTable
-            value={filteredDemandes}
+            value={demandes}
             paginator
             rows={5}
             rowsPerPageOptions={[5, 10, 25, 50]}
             tableStyle={{ minWidth: "50rem" }}
+            paginatorClassName="w-[calc(100%_-_4rem)] relative mx-auto"
           >
             <Column
               field="typeDemmande"
               header="Type de demande"
               style={{ width: "25%" }}
+              className="pl-8"
+              headerClassName="pl-8"
             ></Column>
             <Column
               field="dateDemmande"
@@ -192,7 +192,7 @@ const ProfDemande = () => {
             <Column
               field="status"
               header="Statut"
-              style={{ width: "25%" }}
+              body={statusBodyTemplate}
             ></Column>
             <Column
               header="Action"

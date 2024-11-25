@@ -4,6 +4,7 @@ const getTitleFromPath = (path) => {
   if (path === "/demandesRH2") return "Demandes des documents";
   if (path === "/profs") return "Liste des professeurs";
   if (path === "/charts") return "Accueil";
+  if (path === "/demandes") return "Liste des demandes";
   if (path === "/historiques-professeurs") return "Historique des professeurs";
 };
 
