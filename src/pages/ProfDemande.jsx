@@ -179,7 +179,7 @@ const ProfDemande = () => {
             <Column
               field="typeDemmande"
               header="Type de demande"
-              style={{ width: "25%" }}
+              
               className="pl-8"
               headerClassName="pl-8"
             ></Column>
@@ -187,18 +187,14 @@ const ProfDemande = () => {
               field="dateDemmande"
               header="Date de demande"
               body={dateTemplate}
-              style={{ width: "25%" }}
+              
             ></Column>
             <Column
               field="status"
               header="Statut"
               body={statusBodyTemplate}
             ></Column>
-            <Column
-              header="Action"
-              body={deleteButton}
-              style={{ width: "25%" }}
-            />
+            
           </DataTable>
         </div>
       </>
