@@ -30,7 +30,7 @@ export const getHistoriqueByDoti = async (doti) => {
 
 export const getAllSituations = async () => {
   try {
-    const { data } = await customFetch.get("/api/v1/employes/situations");
+    const { data } = await customFetch.get("/api/v1/employes/situations/2024");
     console.log("Données récupérées :", data);
     return { data, error: null };
   } catch (error) {
@@ -44,7 +44,9 @@ export const getAllSituations = async () => {
 
 export const getSituationsForYear = async (year) => {
   try {
-    const { data } = await customFetch.get(`/api/v1/employes/situations/${year}`);
+    const { data } = await customFetch.get(
+      `/api/v1/employes/situations/${year}`
+    );
     return { data, error: null };
   } catch (error) {
     console.error(

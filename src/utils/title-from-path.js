@@ -5,7 +5,8 @@ const getTitleFromPath = (path) => {
   if (path === "/profs") return "Liste des professeurs";
   if (path === "/charts") return "Accueil";
   if (path === "/demandes") return "Liste des demandes";
-  if (path === "/historiques-professeurs") return "Historique des professeurs";
+  if (path === "/gradation") return "Gradation";
+  if (path === "/historiques-professeurs") return "Gradation";
 };
 
 export default getTitleFromPath;
