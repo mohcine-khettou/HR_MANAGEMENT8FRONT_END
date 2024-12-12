@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import "./Charts.css";
 import {
   PieChart,
@@ -51,10 +50,39 @@ export default function ProfesseurCharts() {
     }));
   };
 
+  const getAgeCategoryDataByDepartment = () => {
+    const departments = [...new Set(professeurs.map((p) => p.departement))];
+    
+    return departments.map((departement) => {
+      const filtered = professeurs.filter(
+        (prof) => prof.departement === departement
+      );
+      console.log(professeurs)
+      console.log(filtered)
+      const count = { "> 60": 0, "< 60": 0 };
+      filtered.forEach((prof) => {
+        const age = new Date().getFullYear() - new Date(prof.dateNaissance).getFullYear();
+        if (age > 60) {
+          count["> 60"] += 1;
+        } else {
+          count["< 60"] += 1;
+        }
+      });
+      return {
+        departement,
+        data: Object.entries(count).map(([key, value]) => ({
+          name: key,
+          value,
+        })),
+      };
+    });
+  };
+
   const gradeData = getCountByAttribute("grade");
   const postData = getCountByAttribute("post");
   const departementData = getCountByAttribute("departement");
   const dateRecrutementData = getCountByAttribute("dateRecrutement");
+  const ageDataByDepartment = getAgeCategoryDataByDepartment();
 
   return (
     <div className="wrapper">
@@ -172,6 +200,38 @@ export default function ProfesseurCharts() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
+          </div>
+          <div className="chart-row">
+            {ageDataByDepartment.map(({ departement, data }) => (
+              <div key={departement} className="chart-column">
+                <h2 className="normal-case">
+                  Professeurs du {departement} par catégorie d'âge
+                </h2>
+                <ResponsiveContainer width="100%" height={450}>
+                  <PieChart>
+                    <Pie
+                      data={data}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={120}
+                      fill="#8884d8"
+                      label
+                    >
+                      {data.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            ))}
           </div>
         </div>
       </div>
