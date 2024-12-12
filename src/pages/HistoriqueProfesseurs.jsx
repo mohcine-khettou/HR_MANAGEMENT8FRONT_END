@@ -3,14 +3,18 @@ import { Card } from "primereact/card";
 import { getAllSituations, getSituationsForYear } from "../api/historique";
 import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
-import { FiCheckCircle } from "react-icons/fi";
+import { FiCheckCircle, FiDownload } from "react-icons/fi";
 import { ImCancelCircle } from "react-icons/im";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import * as XLSX from "xlsx";
 
 const HistoriqueProfesseurs = () => {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [filterGrade, setFilterGrade] = useState("");
   const [filterPost, setFilterPost] = useState("");
+  const [filterNom, setFilterNom] = useState("");
   const [annee, setAnnee] = useState(new Date().getFullYear());
   useEffect(() => {
     getSituationsForYear(annee)
@@ -56,6 +60,31 @@ const HistoriqueProfesseurs = () => {
     if (row.grade === "gradeC") return "D";
     if (row.grade === "gradeD") return row.post === "PES" ? "E" : "D";
   };
+  const exportExcel = () => {
+    const data = employees.filter((employe) => employe.isEligibleForNextPost);
+    console.log(data);
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Professeurs");
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    // Create a temporary download link
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Professeurs_Data.xlsx"; // File name for download
+    a.click();
+
+    // Clean up the temporary object URL
+    URL.revokeObjectURL(url);
+  };
+
   useEffect(() => {
     let filtered = employees;
 
@@ -65,14 +94,25 @@ const HistoriqueProfesseurs = () => {
     if (filterPost) {
       filtered = filtered.filter((employee) => employee.post === filterPost);
     }
+    if (filterNom) {
+      console.log("hello");
+
+      let search = filterNom.toLowerCase();
+      filtered = filtered.filter(
+        (employee) =>
+          employee.nom.toLowerCase().includes(search) ||
+          employee.prenom.toLowerCase().includes(search)
+      );
+    }
 
     setFilteredEmployees(filtered);
-  }, [filterGrade, filterPost, employees]);
+  }, [filterGrade, filterPost, employees, filterNom]);
   console.log(filteredEmployees);
+  console.log(filterNom);
 
   return (
     <Card className="mb-10">
-      <div className="w-full grid md:grid-cols-3 mb-10 gap-8">
+      <div className="w-full grid md:grid-cols-[1fr_1fr_1fr_1fr_auto] mb-10 gap-3">
         <label className={"block w-full"}>
           <span className="block capitalize mb-1 font-medium">Année</span>
           <InputNumber
@@ -80,6 +120,17 @@ const HistoriqueProfesseurs = () => {
             onChange={(e) => setAnnee(e.value)}
             className="w-full"
             useGrouping={false}
+          />
+        </label>
+        <label className={"block w-full"}>
+          <span className="block capitalize mb-1 font-medium">Nom</span>
+          <InputText
+            value={filterNom}
+            onChange={(e) => {
+              setFilterNom(e.target.value);
+            }}
+            className="w-full"
+            defaultValue={""}
           />
         </label>
         <label className={"block w-full"}>
@@ -121,6 +172,17 @@ const HistoriqueProfesseurs = () => {
             className="w-full"
           />
         </label>
+        <Button
+          className="self-end"
+          label="Exporter"
+          icon={
+            <span className="block pr-2 font-bold">
+              {" "}
+              <FiDownload size={16} />
+            </span>
+          }
+          onClick={exportExcel}
+        />
       </div>
 
       <table
