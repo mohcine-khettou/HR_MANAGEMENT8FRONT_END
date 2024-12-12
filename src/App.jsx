@@ -5,6 +5,7 @@ import { ListProfs } from "./components/ListeProfs/ListProfs";
 import ProfesseurCharts from "./components/ProfesseurCharts/ProfesseurCharts";
 import RhDemmande from "./pages/RhDemmande";
 import RhDemmande2 from "./pages/RhDemmande2";
+import Gradation from "./pages/Gradations";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             path="/historiques-professeurs"
             element={<HistoriqueProfesseurs />}
           />
+          <Route path="/gradation" element={<Gradation />} />
           {/* <Route path="demandes" element={} />
           <Route path="pieces" element={} /> */}
         </Route>

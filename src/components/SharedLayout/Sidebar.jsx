@@ -4,6 +4,7 @@ import { useUserContext } from "../../context";
 import { HiUser } from "react-icons/hi";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { BsClockHistory } from "react-icons/bs";
+import { FaArrowTrendUp } from "react-icons/fa6";
 import Logo from "../../assets/images/fsts.png";
 const MySidebar = () => {
   const { user, logout } = useUserContext();
@@ -88,11 +89,10 @@ const MySidebar = () => {
                   {user.role === "RH" && (
                     <SideLink
                       path="/historiques-professeurs"
-                      icon={<BsClockHistory size={20} />}
-                      label="Historique des professeurs"
+                      icon={<FaArrowTrendUp size={20} />}
+                      label="Gradation"
                     />
                   )}
-
                   {user.role === "RH" && (
                     <SideLink
                       path="/charts"
