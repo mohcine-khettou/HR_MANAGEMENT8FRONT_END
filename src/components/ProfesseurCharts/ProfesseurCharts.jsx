@@ -59,13 +59,13 @@ export default function ProfesseurCharts() {
       );
       console.log(professeurs)
       console.log(filtered)
-      const count = { "> 60": 0, "< 60": 0 };
+      const count = { "> 65": 0, "< 65": 0 };
       filtered.forEach((prof) => {
         const age = new Date().getFullYear() - new Date(prof.dateNaissance).getFullYear();
-        if (age > 60) {
-          count["> 60"] += 1;
+        if (age > 65) {
+          count["> 65"] += 1;
         } else {
-          count["< 60"] += 1;
+          count["< 65"] += 1;
         }
       });
       return {
